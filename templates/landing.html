@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1152d4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>NoteFlow | AI-Powered Note Sharing Platform</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 transition-colors duration-300">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 px-6 md:px-20 py-4 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-3 text-primary">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined text-2xl">picture_as_pdf</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-extrabold leading-tight tracking-[-0.015em]">NoteFlow</h2>
+</div>
+<div class="flex flex-1 justify-end gap-3">
+<button class="min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary/10 text-primary text-sm font-bold hover:bg-primary/20 transition-all">
+<span>Log In</span>
+</button>
+<button class="min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/25 hover:scale-105 active:scale-95 transition-all">
+<span>Sign Up</span>
+</button>
+</div>
+</header>
+
+<main class="flex-1">
+<div class="max-w-7xl mx-auto px-6 md:px-20 py-12 md:py-20">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="flex flex-col gap-8">
+<div class="flex flex-col gap-4">
+<h1 class="text-slate-900 dark:text-slate-100 text-4xl md:text-6xl font-black leading-tight tracking-tight">The Ultimate AI-Powered Note Sharing <span class="text-primary">Platform</span></h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg md:text-xl font-normal leading-relaxed max-w-lg">Upload your study notes, collaborate with peers, and let our AI assistant help you master your subjects with instant answers.</p>
+</div>
+</div>
+<div class="relative group">
+<div class="absolute -inset-4 bg-primary/20 rounded-3xl blur-2xl group-hover:bg-primary/30 transition-all duration-500"></div>
+<div class="relative w-full aspect-[4/3] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="w-full h-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD4tl4OP1DyippK4fkLbauN2nqlAvj3WTHIh8KOkKaN7xXele7QWm3cU-tWp8xJA7Bba2eMt_6n_j8EAagBUb3tK9w-wx2dHzZzBdAwo1jQSMOXbVdERA4mS5DxnmZz6RBCxsCaW14leUjx8kCD8XifdUmVy_JKuywKpVgX9eibTZ9lgv6ixtkNoXz1kYQyi1p0QqYPArtnnGzUmdxiW2WhoIxH10s9ATzM9b7h1q8YbdevVrVUd9U5TxtPZk2ewBJpB2ZgDRH8qZOZ"); background-size: cover; background-position: center;'>
+<div class="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<footer class="bg-background-light dark:bg-background-dark py-12 px-6 md:px-20">
+    <div class="max-w-7xl mx-auto flex flex-col gap-8">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3 text-primary">
+                <span class="material-symbols-outlined text-2xl">picture_as_pdf</span>
+                <span class="text-slate-900 dark:text-slate-100 text-lg font-bold">NoteFlow</span>
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-8">
+                <a class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors" href="#">Privacy Policy</a>
+                <a class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors" href="#">Terms of Service</a>
+                <a class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors" href="#">Contact Support</a>
+                <a class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors" href="#">API Docs</a>
+            </div>
+        </div>
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-t border-slate-200 dark:border-slate-800 pt-8">
+            <p class="text-slate-500 text-sm">© 2024 NoteFlow Inc. All rights reserved.</p>
+            <div class="flex gap-4">
+                <span class="material-symbols-outlined text-slate-500 cursor-pointer hover:text-primary">public</span>
+                <span class="material-symbols-outlined text-slate-500 cursor-pointer hover:text-primary">share</span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+</body></html>

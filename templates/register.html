@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#1152d4",
+              "background-light": "#f6f6f8",
+              "background-dark": "#101622",
+            },
+            fontFamily: {
+              "display": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-6 md:px-10 py-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined text-xl">description</span>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold leading-tight tracking-tight">NoteFlow</h2>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<a class="text-slate-600 dark:text-slate-400 text-sm font-semibold hover:text-primary transition-colors" href="#">Login</a>
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+                        Sign Up
+                    </button>
+</div>
+</header>
+<main class="flex-1 flex items-center justify-center p-6 py-12 md:py-20">
+<div class="w-full max-w-[1000px] grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<!-- Left Side: Content -->
+<div class="hidden lg:flex flex-col gap-8 pr-8">
+<div class="space-y-4">
+<span class="px-3 py-1 bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider rounded-full">Coming in 2024</span>
+<h1 class="text-slate-900 dark:text-slate-100 text-5xl font-black leading-tight tracking-tight">Empower your studies with <span class="text-primary">AI-powered</span> notes.</h1>
+<p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">Join thousands of students and educators using NoteFlow to upload study notes, leverage automatic categorization, and unlock AI-powered learning tools.</p>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">groups</span>
+<div>
+<p class="font-bold text-slate-900 dark:text-slate-100">Collaborative Study</p>
+<p class="text-sm text-slate-500">Learn together globally</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">psychology</span>
+<div>
+<p class="font-bold text-slate-900 dark:text-slate-100">AI-Powered Insights</p>
+<p class="text-sm text-slate-500">Instant summaries &amp; flashcards</p>
+</div>
+</div>
+</div>
+<div class="relative h-48 w-full rounded-2xl overflow-hidden bg-slate-200 dark:bg-slate-800">
+<img class="w-full h-full object-cover opacity-50 dark:opacity-30" data-alt="Abstract blue and violet gradient background pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBw7CsmCzwWWYSy6tF6F2cogqsYBVpjC4ZFg0GzVx57oflZ0jn2rZtc5AUGBlBSiuiqTiLLse0Wb5B3xaZOIjRx-W6EZ1Le0uy1rB2RVCs-RUE6kNIL-QHjKUjzPR88F6yrTIoKeDSM3qJVo1FsHjTiC_oDCiy4r6F3VdQjO1_IW6RJwsScLayfLuTTdq5bbZME7e-GMWavv0HALvN-2wt14AdBPR1dhR90ifAEs2ke-neK_BbbJwnPEG0p41HKRm7WMVeJqQ3BYVUx"/>
+<div class="absolute inset-0 flex items-center justify-center p-6 text-center">
+<p class="text-slate-700 dark:text-slate-300 italic">"The most efficient way to organize my lecture notes and prep for exams."</p>
+</div>
+</div>
+</div>
+<!-- Right Side: Registration Form -->
+<div class="bg-white dark:bg-slate-900 p-8 md:p-10 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800">
+<div class="mb-8">
+<h2 class="text-slate-900 dark:text-slate-100 text-3xl font-black mb-2">Create Account</h2>
+<p class="text-slate-500 dark:text-slate-400">Join our global community of lifelong learners today.</p>
+</div>
+<form class="space-y-5">
+<div class="space-y-2">
+<label class="text-slate-700 dark:text-slate-300 text-sm font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">alternate_email</span>
+                                    Username
+                                </label>
+<input class="w-full h-12 px-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600" placeholder="johndoe_99" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-slate-700 dark:text-slate-300 text-sm font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">lock</span>
+                                    Password
+                                </label>
+<input class="w-full h-12 px-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-slate-400 dark:placeholder:text-slate-600" placeholder="••••••••" type="password"/>
+</div>
+<div class="pt-4">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg shadow-lg shadow-primary/30 transition-all flex items-center justify-center gap-2" type="submit">
+<span>Create Account</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<p class="text-center text-sm text-slate-500 mt-6">Join our global community of lifelong learners today.</p>
+</form>
+</div>
+</div>
+</main>
+<!-- Footer Section -->
+<footer class="mt-auto px-6 md:px-10 py-8 border-t border-slate-200 dark:border-slate-800 text-center">
+<p class="text-slate-500 text-sm">© 2024 NoteFlow Inc. All rights reserved. <a class="hover:text-primary mx-2" href="#">Terms</a> <a class="hover:text-primary mx-2" href="#">Privacy</a></p>
+</footer>
+</div>
+</div>
+</body></html>
