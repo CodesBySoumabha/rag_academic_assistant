@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, send_from_directory
 import sqlite3
 import os
 import fitz
@@ -6,7 +6,9 @@ import fitz
 app = Flask(__name__)
 app.secret_key = "secret123"
 
-UPLOAD_FOLDER = "uploads"
+# FIX: Use an absolute path for the uploads folder so Flask never loses track of it
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
@@ -37,26 +39,20 @@ init_db()
 
 # AUTO CATEGORIZE PDF
 def categorize_pdf(filepath):
-
     try:
         doc = fitz.open(filepath)
         text = doc[0].get_text().lower()
 
         if "python" in text or "programming" in text:
             return "Programming"
-
         elif "machine learning" in text or "ai" in text:
             return "AI"
-
         elif "physics" in text or "quantum" in text:
             return "Science"
-
         elif "finance" in text or "economy" in text:
             return "Business"
-
         else:
             return "Others"
-
     except:
         return "Others"
     
@@ -66,11 +62,9 @@ def landing():
     return render_template("landing.html")
 
 # LOGIN PAGE
-@app.route("/", methods=["GET","POST"])
+@app.route("/login", methods=["GET","POST"])
 def login():
-
     if request.method == "POST":
-
         username = request.form["username"]
         password = request.form["password"]
 
@@ -92,9 +86,7 @@ def login():
 # REGISTER PAGE
 @app.route("/register", methods=["GET","POST"])
 def register():
-
     if request.method == "POST":
-
         username = request.form["username"]
         password = request.form["password"]
 
@@ -109,7 +101,7 @@ def register():
 
         conn.close()
 
-        return redirect("/")
+        return redirect("/login")
 
     return render_template("register.html")
 
@@ -117,44 +109,45 @@ def register():
 # DASHBOARD
 @app.route("/dashboard", methods=["GET","POST"])
 def dashboard():
-
     if "user" not in session:
-        return redirect("/")
+        return redirect("/login")
 
     username = session["user"]
 
     conn = sqlite3.connect("database.db")
     c = conn.cursor()
 
+    # 1. Get the current user's files
     c.execute("SELECT filename,category FROM files WHERE username=?",(username,))
-    files = c.fetchall()
+    user_files = c.fetchall()
+
+    # 2. Get EVERYONE ELSE'S files (Community Notes)
+    c.execute("SELECT username, filename, category FROM files WHERE username != ?", (username,))
+    community_files = c.fetchall()
 
     conn.close()
 
+    # Group the user's files by category
     categories = {}
-
-    for file in files:
+    for file in user_files:
         cat = file[1]
-
         if cat not in categories:
             categories[cat] = []
-
         categories[cat].append(file[0])
 
-    return render_template("dashboard.html",categories=categories)
+    # Pass both sets of files to the template
+    return render_template("dashboard.html", categories=categories, community_files=community_files)
 
 
 # UPLOAD PDF
 @app.route("/upload", methods=["POST"])
 def upload():
-
     if "user" not in session:
-        return redirect("/")
+        return redirect("/login")
 
     file = request.files["pdf"]
 
     if file:
-
         filepath = os.path.join(UPLOAD_FOLDER,file.filename)
         file.save(filepath)
 
@@ -175,9 +168,8 @@ def upload():
 # DELETE FILE
 @app.route("/delete/<filename>")
 def delete(filename):
-
     if "user" not in session:
-        return redirect("/")
+        return redirect("/login")
 
     filepath = os.path.join(UPLOAD_FOLDER,filename)
 
@@ -194,13 +186,37 @@ def delete(filename):
 
     return redirect("/dashboard")
 
+# VIEW PDF PAGE (Loads the viewer.html template)
+@app.route("/view/<filename>")
+def view_pdf(filename):
+    if "user" not in session:
+        return redirect("/login")
+
+    username = session["user"]
+    
+    conn = sqlite3.connect("database.db")
+    c = conn.cursor()
+    c.execute("SELECT category FROM files WHERE username=? AND filename=?", (username, filename))
+    result = c.fetchone()
+    conn.close()
+
+    category = result[0] if result else "Unknown"
+
+    return render_template("viewer.html", filename=filename, category=category)
+
+# SERVE RAW PDF FILES (This is what the iframe inside viewer.html actually calls!)
+@app.route("/file/<filename>")
+def serve_file(filename):
+    if "user" not in session:
+        return redirect("/login")
+    return send_from_directory(UPLOAD_FOLDER, filename)
+
 
 # LOGOUT
 @app.route("/logout")
 def logout():
-
     session.pop("user",None)
     return redirect("/")
 
-
-app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>NoteFlow - Document Viewer</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1152d4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Manrope', sans-serif; }
+        .pdf-canvas {
+            background-image: linear-gradient(to bottom, #ffffff 0%, #f8fafc 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        /* Guarantee Material Symbols render as icons */
+        .material-symbols-outlined {
+          font-family: 'Material Symbols Outlined' !important;
+          font-weight: normal;
+          font-style: normal;
+          line-height: 1;
+          letter-spacing: normal;
+          text-transform: none;
+          display: inline-block;
+          white-space: nowrap;
+          word-wrap: normal;
+          direction: ltr;
+          -webkit-font-smoothing: antialiased;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased font-display">
+<div class="flex h-screen w-full flex-col overflow-hidden">
+<header class="flex h-16 items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 shrink-0">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined text-xl">auto_stories</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-primary">NoteFlow</h1>
+</div>
+<div class="h-6 w-px bg-slate-200 dark:bg-slate-700"></div>
+<div class="flex items-center gap-3">
+<span class="text-sm font-semibold text-slate-800 dark:text-slate-200">{{ filename }}</span>
+<span class="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary uppercase tracking-wider">{{ category }}</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<a href="/file/{{ filename }}" download class="flex items-center gap-2 rounded-lg bg-slate-100 dark:bg-slate-800 px-3 py-2 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-lg">download</span>
+<span>Export</span>
+</a>
+<a href="/dashboard" class="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white hover:bg-primary/90 shadow-sm transition-colors">
+<span class="material-symbols-outlined text-lg">close</span>
+<span>Close Viewer</span>
+</a>
+<div class="ml-2 h-8 w-8 rounded-full bg-slate-300 dark:bg-slate-700 overflow-hidden ring-2 ring-slate-100 dark:ring-slate-800">
+<img alt="User Profile" class="h-full w-full object-cover" data-alt="Professional user profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1Ux-fW7asu-Mr86_RDnOuRv04fMQ4rbINXB4ubg_Ev-IDZ_ZvpmEgRMpvYeH5w77ZZhDL7gHmM86q6S_gwsyIqBLV6smzdmeWciMOMdo7VRHT_GWyR9KOu58_U40hZ2BOi2gFg8Sd86fSwxJtMUTZ8r0JtANcxALYOE1qvEMzg7t7X91aMXWfsbDsK4FPG4qH374DQxLsnpaPFvDHuoa6-81fR752gVtrwMB_jmbF5qoWhEixNt20EFb1gUvnLgcsZDqORRJcnU0b"/>
+</div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<div class="flex-1 flex flex-col bg-slate-100 dark:bg-slate-950 overflow-hidden">
+<div class="flex h-12 items-center justify-center gap-4 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm px-4">
+<div class="flex items-center gap-1 rounded-md bg-slate-100 dark:bg-slate-800 p-1">
+<button class="p-1 hover:bg-white dark:hover:bg-slate-700 rounded text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-xl">zoom_out</span>
+</button>
+<span class="text-xs font-medium px-2">100%</span>
+<button class="p-1 hover:bg-white dark:hover:bg-slate-700 rounded text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined text-xl">zoom_in</span>
+</button>
+</div>
+<div class="h-4 w-px bg-slate-300 dark:bg-slate-700"></div>
+<button class="flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium text-primary bg-primary/10">
+<span class="material-symbols-outlined text-lg">edit</span>
+<span>Annotate</span>
+</button>
+</div>
+
+<div class="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar bg-slate-200/50 dark:bg-slate-950">
+<div class="mx-auto max-w-5xl shadow-2xl rounded-sm overflow-hidden ring-1 ring-slate-200 dark:ring-slate-800 h-full min-h-[800px]">
+    <iframe src="/file/{{ filename }}#toolbar=0&navpanes=0" class="w-full h-full min-h-[800px] border-0 bg-white" title="PDF Viewer"></iframe>
+</div>
+</div>
+</div>
+<aside class="w-[400px] border-l border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col shrink-0">
+<div class="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-primary/5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary font-fill">auto_awesome</span>
+<h3 class="font-bold text-slate-800 dark:text-slate-100">AI Study Assistant</h3>
+</div>
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+<span class="material-symbols-outlined text-lg">close_fullscreen</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar">
+<div class="rounded-xl bg-slate-50 dark:bg-slate-800/50 p-4 border border-slate-200 dark:border-slate-700">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Suggested Questions</p>
+<div class="flex flex-wrap gap-2">
+<button class="text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full px-3 py-1.5 hover:border-primary hover:text-primary transition-all">Summarize this document</button>
+<button class="text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full px-3 py-1.5 hover:border-primary hover:text-primary transition-all">What are the key takeaways?</button>
+<button class="text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full px-3 py-1.5 hover:border-primary hover:text-primary transition-all">Explain the main concept</button>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-lg font-fill">smart_toy</span>
+</div>
+<div class="flex flex-col gap-2">
+<div class="max-w-full rounded-2xl rounded-tl-none bg-slate-100 dark:bg-slate-800 px-4 py-3 text-sm leading-relaxed text-slate-700 dark:text-slate-300 shadow-sm border border-slate-200 dark:border-slate-700">
+<p>Hello! I am your AI Study Assistant. Ask me any questions about <strong>{{ filename }}</strong> and I'll do my best to help you understand it.</p>
+</div>
+<span class="text-[10px] text-slate-400">Assistant • Just now</span>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+<div class="relative">
+<textarea class="w-full rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-3 pr-12 text-sm focus:border-primary focus:ring-primary dark:text-slate-200 placeholder:text-slate-400 resize-none custom-scrollbar" placeholder="Ask IntelliDocs AI anything about this note..." rows="2"></textarea>
+<button class="absolute bottom-2 right-2 flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white hover:bg-primary/90 transition-transform active:scale-95 shadow-md">
+<span class="material-symbols-outlined text-xl">send</span>
+</button>
+</div>
+<div class="mt-2 flex items-center justify-between px-1">
+<div class="flex gap-2">
+<button class="p-1 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">mic</span>
+</button>
+<button class="p-1 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">attach_file</span>
+</button>
+</div>
+<p class="text-[10px] text-slate-400 italic">AI-generated content may contain inaccuracies</p>
+</div>
+</div>
+</aside>
+</main>
+</div>
+</body>
+</html>
