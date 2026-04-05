@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html class="light" lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>NoteFlow - Document Management</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -24,242 +26,320 @@
                     fontFamily: {
                         "display": ["Manrope", "sans-serif"]
                     },
-                    borderRadius: {"DEFAULT": "8px", "lg": "12px", "xl": "16px", "full": "9999px"},
+                    borderRadius: { "DEFAULT": "8px", "lg": "12px", "xl": "16px", "full": "9999px" },
                 },
             },
         }
     </script>
     <style>
-        body { font-family: 'Manrope', sans-serif; }
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+
         /* Guarantee Material Symbols render as icons */
         .material-symbols-outlined {
-          font-family: 'Material Symbols Outlined' !important;
-          font-weight: normal;
-          font-style: normal;
-          line-height: 1;
-          letter-spacing: normal;
-          text-transform: none;
-          display: inline-block;
-          white-space: nowrap;
-          word-wrap: normal;
-          direction: ltr;
-          -webkit-font-smoothing: antialiased;
+            font-family: 'Material Symbols Outlined' !important;
+            font-weight: normal;
+            font-style: normal;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
         }
+
         /* Hide scrollbar for cleaner look in horizontal scroll */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
+
         .no-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
     </style>
 </head>
+
 <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
-<div class="flex h-screen overflow-hidden">
-<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col">
-<div class="p-6 flex items-center gap-3">
-<div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
-<span class="material-symbols-outlined">description</span>
-</div>
-<div>
-<h1 class="text-xl font-bold tracking-tight">NoteFlow</h1>
-<p class="text-xs text-slate-500 dark:text-slate-400">Doc Management</p>
-</div>
-</div>
-<div class="px-4 mb-6">
-    <form action="/upload" method="POST" enctype="multipart/form-data" class="w-full">
-        <label class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-white font-bold rounded-lg text-sm hover:shadow-lg hover:shadow-primary/30 transition-all cursor-pointer">
-            <span class="material-symbols-outlined text-[20px]">add_circle</span>Upload Note
-            <input type="file" name="pdf" accept=".pdf" class="hidden" onchange="this.form.submit()">
-        </label>
-    </form>
-</div>
-<nav class="flex-1 px-4 space-y-1">
-    <a href="#" onclick="filterNotes('All'); return false;" data-target="All" class="category-link flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary font-semibold"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="text-sm">All Documents</span></a>
-    <a href="#" onclick="filterNotes('Programming'); return false;" data-target="Programming" class="category-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><span class="material-symbols-outlined text-[20px]">code</span><span class="text-sm">Programming</span></a>
-    <a href="#" onclick="filterNotes('AI'); return false;" data-target="AI" class="category-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><span class="material-symbols-outlined text-[20px]">psychology</span><span class="text-sm">AI / Machine Learning</span></a>
-    <a href="#" onclick="filterNotes('Science'); return false;" data-target="Science" class="category-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><span class="material-symbols-outlined text-[20px]">science</span><span class="text-sm">Science</span></a>
-    <a href="#" onclick="filterNotes('Business'); return false;" data-target="Business" class="category-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><span class="material-symbols-outlined text-[20px]">business_center</span><span class="text-sm">Business</span></a>
-    <a href="#" onclick="filterNotes('Others'); return false;" data-target="Others" class="category-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><span class="material-symbols-outlined text-[20px]">more_horiz</span><span class="text-sm">Others</span></a>
-</nav>
-</aside>
-<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
-<header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-8 z-10">
-<div class="flex-1 max-w-md">
-<div class="relative group">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
-<input class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search by name, content, or category..." type="text"/>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative">
-<span class="material-symbols-outlined">notifications</span>
-<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
-</button>
-<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
-<span class="material-symbols-outlined">settings</span>
-</button>
-<div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2"></div>
-<div class="flex items-center gap-3">
-<div class="text-right hidden sm:block">
-<p class="text-sm font-bold leading-none">{{ session.get('user', 'User') }}</p>
-<p class="text-xs text-slate-500">Pro Account</p>
-<a href="/logout" class="text-[10px] text-red-500 font-bold hover:underline mt-1 block">Logout</a>
-</div>
-<img alt="User Profile" class="size-10 rounded-full object-cover border-2 border-primary/20" data-alt="A smiling professional male profile photo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXjegswhfSRx5YUcOSdmrfkMlV6X5PdNZn0Nafp8TnJuvLHd02aZ3taNUzcjrFYIFIQasNN0ATAysPZJPxm_ySLhUTLLU6VeZ3uc00UsPjeJ9mlSs2bXnklw6XLUqjhNmpFHCndnsF6CCGNa2I9MdYnbEhqfdTEbZlAt5bLerTGoe7tF6ahIE2IHUxSh8mWzpy9Dd-ehzI1InjOGjhk0i0xpksOYZhWlmIskjtb6G9M5297xR-nyxOkczi21JxnYdNADwO1wAOX2OM"/>
-</div>
-</div>
-</header>
-
-<div class="flex-1 overflow-y-auto p-8">
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
-        <div>
-            <h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">NoteFlow</h2>
-            <p class="text-slate-500 dark:text-slate-400 mt-1">Explore, annotate and organize your study library</p>
-        </div>
-        <div class="flex items-center gap-3">
-            <button class="flex items-center gap-2 px-4 py-2.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold rounded-lg text-sm hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors"><span class="material-symbols-outlined text-[20px]">sort</span>Sort</button>
-        </div>
-    </div>
-    
-    <div class="flex border-b border-slate-200 dark:border-slate-800 mb-8 overflow-x-auto no-scrollbar">
-        <button onclick="filterNotes('All')" data-target="All" class="category-tab px-6 py-4 text-sm font-bold text-primary border-b-2 border-primary whitespace-nowrap">All Notes</button>
-        <button onclick="filterNotes('Programming')" data-target="Programming" class="category-tab px-6 py-4 text-sm font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Programming</button>
-        <button onclick="filterNotes('AI')" data-target="AI" class="category-tab px-6 py-4 text-sm font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">AI</button>
-        <button onclick="filterNotes('Science')" data-target="Science" class="category-tab px-6 py-4 text-sm font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Science</button>
-        <button onclick="filterNotes('Business')" data-target="Business" class="category-tab px-6 py-4 text-sm font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Business</button>
-        <button onclick="filterNotes('Others')" data-target="Others" class="category-tab px-6 py-4 text-sm font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Others</button>
-    </div>
-    
-    <section class="mb-12">
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-bold flex items-center gap-2"><span class="material-symbols-outlined text-primary">folder_shared</span>My Study Notes</h3>
-            <button class="text-primary text-sm font-semibold hover:underline">View All</button>
-        </div>
-        
-        <div class="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
-            {% for category, files in categories.items() %}
-                {% for file in files %}
-                <div class="note-card group flex-none w-48 flex flex-col gap-3" data-category="{{ category }}">
-                    <div class="relative aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm group-hover:shadow-xl group-hover:-translate-y-1 transition-all">
-                        <div class="absolute inset-0 bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
-                            <span class="material-symbols-outlined text-6xl text-slate-200 dark:text-slate-700">picture_as_pdf</span>
-                        </div>
-                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 z-10 backdrop-blur-sm">
-                            <a href="/view/{{ file }}" class="p-2.5 bg-white rounded-full text-slate-800 hover:text-primary hover:scale-110 transition-all shadow-lg" title="Open PDF">
-                                <span class="material-symbols-outlined text-[22px]">visibility</span>
-                            </a>
-                            <a href="/delete/{{ file }}" class="p-2.5 bg-white rounded-full text-slate-800 hover:text-red-500 hover:scale-110 transition-all shadow-lg" title="Delete PDF">
-                                <span class="material-symbols-outlined text-[22px]">delete</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div>
-                        <a href="/view/{{ file }}" class="text-sm font-bold text-slate-900 dark:text-white truncate block hover:text-primary transition-colors" title="{{ file }}">{{ file }}</a>
-                        <div class="flex items-center justify-between mt-1.5">
-                            <span class="text-[10px] px-2 py-0.5 bg-primary/10 text-primary rounded-full font-bold uppercase tracking-wider">{{ category }}</span>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            {% endfor %}
-
-            <label class="group flex-none w-48 aspect-[3/4] border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl flex flex-col items-center justify-center gap-3 text-slate-400 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
-                <div class="p-3 rounded-full bg-slate-100 dark:bg-slate-800 group-hover:bg-primary/10 transition-colors">
-                    <span class="material-symbols-outlined text-3xl">add</span>
-                </div>
-                <span class="text-sm font-bold">Upload Note</span>
-                <input type="file" name="pdf" accept=".pdf" class="hidden" onchange="document.querySelector('form[action=\'/upload\'] input[type=\'file\']').files = this.files; document.querySelector('form[action=\'/upload\']').submit();">
-            </label>
-        </div>
-    </section>
-
-    <section>
-        <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-bold flex items-center gap-2"><span class="material-symbols-outlined text-primary">public</span>Community Notes</h3>
-            <div class="flex items-center gap-2">
-                <span class="text-sm text-slate-500">Sort by:</span>
-                <select class="text-sm border-none bg-transparent font-bold focus:ring-0 cursor-pointer"><option>Trending</option><option>Newest</option><option>Top Rated</option></select>
-            </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            
-            {% for uploader, filename, category in community_files %}
-            <div class="note-card group flex flex-col gap-3" data-category="{{ category }}">
-                <div class="relative aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm group-hover:shadow-xl group-hover:-translate-y-1 transition-all">
-                    <div class="absolute inset-0 bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-6xl text-slate-200 dark:text-slate-700">description</span>
-                    </div>
-                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-sm">
-                        <a href="/view/{{ filename }}" class="p-2 bg-white rounded-full text-slate-700 hover:text-primary transition-colors" title="Preview">
-                            <span class="material-symbols-outlined text-[20px]">visibility</span>
-                        </a>
-                        <a href="/file/{{ filename }}" download class="p-2 bg-white rounded-full text-slate-700 hover:text-primary transition-colors" title="Download">
-                            <span class="material-symbols-outlined text-[20px]">download</span>
-                        </a>
-                    </div>
+    <div class="flex h-screen overflow-hidden">
+        <aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col">
+            <div class="p-6 flex items-center gap-3">
+                <div class="size-10 bg-primary rounded-lg flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined">description</span>
                 </div>
                 <div>
-                    <a href="/view/{{ filename }}" class="text-sm font-bold text-slate-900 dark:text-white truncate block hover:text-primary transition-colors" title="{{ filename }}">{{ filename }}</a>
-                    <p class="text-[11px] text-slate-500 mb-1">By {{ uploader }}</p>
-                    <div class="flex items-center justify-between mt-1">
-                        <span class="text-[10px] px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full font-bold uppercase">{{ category }}</span>
-                    </div>
+                    <h1 class="text-xl font-bold tracking-tight">NoteFlow</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Doc Management</p>
                 </div>
             </div>
-            {% else %}
-            <div class="col-span-full py-12 text-center text-slate-500">
-                <span class="material-symbols-outlined text-4xl mb-2 opacity-50">search_off</span>
-                <p>No community notes have been uploaded yet.</p>
+            <div class="px-4 mb-6">
+                <form action="/upload" method="POST" enctype="multipart/form-data" class="w-full">
+                    <label
+                        class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-white font-bold rounded-lg text-sm hover:shadow-lg hover:shadow-primary/30 transition-all cursor-pointer">
+                        <span class="material-symbols-outlined text-[20px]">add_circle</span>Upload Note
+                        <input type="file" name="pdf" accept=".pdf,.jpg,.jpeg,.png" class="hidden"
+                            onchange="this.form.submit()">
+                    </label>
+                </form>
             </div>
-            {% endfor %}
+            <nav class="flex-1 px-4 space-y-1">
+                <a href="#" onclick="filterNotes('All'); return false;" data-target="All"
+                    class="category-link flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary font-semibold"><span
+                        class="material-symbols-outlined text-[20px]">dashboard</span><span class="text-sm">All
+                        Documents</span></a>
+                <a href="#" onclick="filterNotes('Programming'); return false;" data-target="Programming"
+                    class="category-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><span
+                        class="material-symbols-outlined text-[20px]">code</span><span
+                        class="text-sm">Programming</span></a>
+                <a href="#" onclick="filterNotes('AI'); return false;" data-target="AI"
+                    class="category-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><span
+                        class="material-symbols-outlined text-[20px]">psychology</span><span class="text-sm">AI /
+                        Machine Learning</span></a>
+                <a href="#" onclick="filterNotes('Science'); return false;" data-target="Science"
+                    class="category-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><span
+                        class="material-symbols-outlined text-[20px]">science</span><span
+                        class="text-sm">Science</span></a>
+                <a href="#" onclick="filterNotes('Business'); return false;" data-target="Business"
+                    class="category-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><span
+                        class="material-symbols-outlined text-[20px]">business_center</span><span
+                        class="text-sm">Business</span></a>
+                <a href="#" onclick="filterNotes('Others'); return false;" data-target="Others"
+                    class="category-link flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"><span
+                        class="material-symbols-outlined text-[20px]">more_horiz</span><span
+                        class="text-sm">Others</span></a>
+            </nav>
+        </aside>
+        <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+            <header
+                class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-8 z-10">
+                <div class="flex-1 max-w-md">
+                    <div class="relative group">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+                        <input
+                            class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/20 transition-all"
+                            placeholder="Search by name, content, or category..." type="text" />
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span
+                            class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+                    </button>
+                    <button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                        <span class="material-symbols-outlined">settings</span>
+                    </button>
+                    <div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-800 mx-2"></div>
+                    <div class="flex items-center gap-3">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-sm font-bold leading-none">{{ session.get('user', 'User') }}</p>
+                            <p class="text-xs text-slate-500">Pro Account</p>
+                            <a href="/logout"
+                                class="text-[10px] text-red-500 font-bold hover:underline mt-1 block">Logout</a>
+                        </div>
+                        <img alt="User Profile" class="size-10 rounded-full object-cover border-2 border-primary/20"
+                            data-alt="A smiling professional male profile photo"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXjegswhfSRx5YUcOSdmrfkMlV6X5PdNZn0Nafp8TnJuvLHd02aZ3taNUzcjrFYIFIQasNN0ATAysPZJPxm_ySLhUTLLU6VeZ3uc00UsPjeJ9mlSs2bXnklw6XLUqjhNmpFHCndnsF6CCGNa2I9MdYnbEhqfdTEbZlAt5bLerTGoe7tF6ahIE2IHUxSh8mWzpy9Dd-ehzI1InjOGjhk0i0xpksOYZhWlmIskjtb6G9M5297xR-nyxOkczi21JxnYdNADwO1wAOX2OM" />
+                    </div>
+                </div>
+            </header>
 
-        </div>
-    </section>
-</div>
-</main>
-</div>
+            <div class="flex-1 overflow-y-auto p-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                    <div>
+                        <h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">NoteFlow</h2>
+                        <p class="text-slate-500 dark:text-slate-400 mt-1">Explore, annotate and organize your study
+                            library</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button
+                            class="flex items-center gap-2 px-4 py-2.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold rounded-lg text-sm hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors"><span
+                                class="material-symbols-outlined text-[20px]">sort</span>Sort</button>
+                    </div>
+                </div>
 
-<script>
-    function filterNotes(selectedCategory) {
-        // 1. Hide or Show the Note Cards
-        const cards = document.querySelectorAll('.note-card');
-        cards.forEach(card => {
-            // If the selected category is "All", or the card's category matches, show it.
-            if (selectedCategory === 'All' || card.dataset.category === selectedCategory) {
-                card.style.display = ''; // Removes inline display style to let original flex class take over
-            } else {
-                card.style.display = 'none'; // Hides the card
-            }
-        });
+                <div class="flex border-b border-slate-200 dark:border-slate-800 mb-8 overflow-x-auto no-scrollbar">
+                    <button onclick="filterNotes('All')" data-target="All"
+                        class="category-tab px-6 py-4 text-sm font-bold text-primary border-b-2 border-primary whitespace-nowrap">All
+                        Notes</button>
+                    <button onclick="filterNotes('Programming')" data-target="Programming"
+                        class="category-tab px-6 py-4 text-sm font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Programming</button>
+                    <button onclick="filterNotes('AI')" data-target="AI"
+                        class="category-tab px-6 py-4 text-sm font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">AI</button>
+                    <button onclick="filterNotes('Science')" data-target="Science"
+                        class="category-tab px-6 py-4 text-sm font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Science</button>
+                    <button onclick="filterNotes('Business')" data-target="Business"
+                        class="category-tab px-6 py-4 text-sm font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Business</button>
+                    <button onclick="filterNotes('Others')" data-target="Others"
+                        class="category-tab px-6 py-4 text-sm font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap">Others</button>
+                </div>
 
-        // 2. Update Top Tabs Styling
-        document.querySelectorAll('.category-tab').forEach(tab => {
-            if (tab.dataset.target === selectedCategory) {
-                // Active State styling
-                tab.classList.add('text-primary', 'border-b-2', 'border-primary');
-                tab.classList.remove('text-slate-500', 'hover:text-slate-700', 'dark:hover:text-slate-300');
-            } else {
-                // Inactive State styling
-                tab.classList.remove('text-primary', 'border-b-2', 'border-primary');
-                tab.classList.add('text-slate-500', 'hover:text-slate-700', 'dark:hover:text-slate-300');
-            }
-        });
+                <section class="mb-12">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold flex items-center gap-2"><span
+                                class="material-symbols-outlined text-primary">folder_shared</span>My Study Notes</h3>
+                        <button class="text-primary text-sm font-semibold hover:underline">View All</button>
+                    </div>
 
-        // 3. Update Left Sidebar Link Styling
-        document.querySelectorAll('.category-link').forEach(link => {
-            if (link.dataset.target === selectedCategory) {
-                // Active State styling
-                link.classList.add('bg-primary/10', 'text-primary', 'font-semibold');
-                link.classList.remove('text-slate-600', 'dark:text-slate-400', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
-            } else {
-                // Inactive State styling
-                link.classList.remove('bg-primary/10', 'text-primary', 'font-semibold');
-                link.classList.add('text-slate-600', 'dark:text-slate-400', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
-            }
-        });
-    }
-</script>
+                    <div class="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
+                        {% for category, files in categories.items() %}
+                        {% for file, summary in files %}
+                        <div class="note-card group flex-none w-48 flex flex-col gap-3" data-category="{{ category }}">
+                            <div
+                                class="relative aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm group-hover:shadow-xl group-hover:-translate-y-1 transition-all">
+                                <div
+                                    class="absolute inset-0 bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+                                    <span
+                                        class="material-symbols-outlined text-6xl text-slate-200 dark:text-slate-700">picture_as_pdf</span>
+                                </div>
+                                <div
+                                    class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 z-10 backdrop-blur-sm">
+                                    <a href="/view/{{ file }}"
+                                        class="p-2.5 bg-white rounded-full text-slate-800 hover:text-primary hover:scale-110 transition-all shadow-lg"
+                                        title="Open PDF">
+                                        <span class="material-symbols-outlined text-[22px]">visibility</span>
+                                    </a>
+                                    <a href="/delete/{{ file }}"
+                                        class="p-2.5 bg-white rounded-full text-slate-800 hover:text-red-500 hover:scale-110 transition-all shadow-lg"
+                                        title="Delete PDF">
+                                        <span class="material-symbols-outlined text-[22px]">delete</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="/view/{{ file }}"
+                                    class="text-sm font-bold text-slate-900 dark:text-white truncate block hover:text-primary transition-colors"
+                                    title="{{ file }}">{{ file }}</a>
+                                <div class="flex items-center justify-between mt-1.5">
+                                    <span
+                                        class="text-[10px] px-2 py-0.5 bg-primary/10 text-primary rounded-full font-bold uppercase tracking-wider">{{
+                                        category }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% endfor %}
+
+                        <label
+                            class="group flex-none w-48 aspect-[3/4] border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl flex flex-col items-center justify-center gap-3 text-slate-400 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all cursor-pointer">
+                            <div
+                                class="p-3 rounded-full bg-slate-100 dark:bg-slate-800 group-hover:bg-primary/10 transition-colors">
+                                <span class="material-symbols-outlined text-3xl">add</span>
+                            </div>
+                            <span class="text-sm font-bold">Upload Note</span>
+                            <input type="file" name="pdf" accept=".pdf,.jpg,.jpeg,.png" class="hidden"
+                                onchange="document.querySelector('form[action=\'/upload\'] input[type=\'file\']').files = this.files; document.querySelector('form[action=\'/upload\']').submit();">
+                        </label>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold flex items-center gap-2"><span
+                                class="material-symbols-outlined text-primary">public</span>Community Notes</h3>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-slate-500">Sort by:</span>
+                            <select class="text-sm border-none bg-transparent font-bold focus:ring-0 cursor-pointer">
+                                <option>Trending</option>
+                                <option>Newest</option>
+                                <option>Top Rated</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+
+                        {% for uploader, filename, category in community_files %}
+                        <div class="note-card group flex flex-col gap-3" data-category="{{ category }}">
+                            <div
+                                class="relative aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm group-hover:shadow-xl group-hover:-translate-y-1 transition-all">
+                                <div
+                                    class="absolute inset-0 bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+                                    <span
+                                        class="material-symbols-outlined text-6xl text-slate-200 dark:text-slate-700">description</span>
+                                </div>
+                                <div
+                                    class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-sm">
+                                    <a href="/view/{{ filename }}"
+                                        class="p-2 bg-white rounded-full text-slate-700 hover:text-primary transition-colors"
+                                        title="Preview">
+                                        <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                    </a>
+                                    <a href="/file/{{ filename }}" download
+                                        class="p-2 bg-white rounded-full text-slate-700 hover:text-primary transition-colors"
+                                        title="Download">
+                                        <span class="material-symbols-outlined text-[20px]">download</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div>
+                                <a href="/view/{{ filename }}"
+                                    class="text-sm font-bold text-slate-900 dark:text-white truncate block hover:text-primary transition-colors"
+                                    title="{{ filename }}">{{ filename }}</a>
+                                <p class="text-[11px] text-slate-500 mb-1">By {{ uploader }}</p>
+                                <div class="flex items-center justify-between mt-1">
+                                    <span
+                                        class="text-[10px] px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full font-bold uppercase">{{
+                                        category }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="col-span-full py-12 text-center text-slate-500">
+                            <span class="material-symbols-outlined text-4xl mb-2 opacity-50">search_off</span>
+                            <p>No community notes have been uploaded yet.</p>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function filterNotes(selectedCategory) {
+            // 1. Hide or Show the Note Cards
+            const cards = document.querySelectorAll('.note-card');
+            cards.forEach(card => {
+                // If the selected category is "All", or the card's category matches, show it.
+                if (selectedCategory === 'All' || card.dataset.category === selectedCategory) {
+                    card.style.display = ''; // Removes inline display style to let original flex class take over
+                } else {
+                    card.style.display = 'none'; // Hides the card
+                }
+            });
+
+            // 2. Update Top Tabs Styling
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                if (tab.dataset.target === selectedCategory) {
+                    // Active State styling
+                    tab.classList.add('text-primary', 'border-b-2', 'border-primary');
+                    tab.classList.remove('text-slate-500', 'hover:text-slate-700', 'dark:hover:text-slate-300');
+                } else {
+                    // Inactive State styling
+                    tab.classList.remove('text-primary', 'border-b-2', 'border-primary');
+                    tab.classList.add('text-slate-500', 'hover:text-slate-700', 'dark:hover:text-slate-300');
+                }
+            });
+
+            // 3. Update Left Sidebar Link Styling
+            document.querySelectorAll('.category-link').forEach(link => {
+                if (link.dataset.target === selectedCategory) {
+                    // Active State styling
+                    link.classList.add('bg-primary/10', 'text-primary', 'font-semibold');
+                    link.classList.remove('text-slate-600', 'dark:text-slate-400', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
+                } else {
+                    // Inactive State styling
+                    link.classList.remove('bg-primary/10', 'text-primary', 'font-semibold');
+                    link.classList.add('text-slate-600', 'dark:text-slate-400', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
+                }
+            });
+        }
+    </script>
 </body>
+
 </html>
