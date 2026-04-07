@@ -264,7 +264,7 @@
             </div>
             <div class="flex flex-col gap-1 max-w-[310px]">
                 <div class="rounded-2xl rounded-tl-none bg-slate-100 dark:bg-slate-800 px-4 py-3 text-sm leading-relaxed text-slate-700 dark:text-slate-300 shadow-sm border border-slate-200 dark:border-slate-700">
-                    ${escapeHtml(answer)}
+                    <p>${renderMarkdown(answer)}</p>
                     ${sourcesHtml}
                 </div>
                 <span class="text-[10px] text-slate-400 ml-1">Assistant • Just now</span>
@@ -327,15 +327,33 @@
         }
     }
 
-    function scrollToBottom() {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
     function escapeHtml(text) {
-        const div = document.createElement("div");
-        div.appendChild(document.createTextNode(text));
-        return div.innerHTML;
-    }
+    const div = document.createElement("div");
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
+}
+
+function renderMarkdown(text) {
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/^[-•]\s(.+)/gm, '<li style="margin-left:16px;list-style:disc">$1</li>')
+        .replace(/^\d+\.\s(.+)/gm, '<li style="margin-left:16px;list-style:decimal">$1</li>')
+        .replace(/\n\n/g, '<br/><br/>')
+        .replace(/\n/g, '<br/>');
+}
+function scrollToBottom() {
+    setTimeout(() => {
+        const messages = chatMessages.children;
+        if (messages.length > 0) {
+            const lastMessage = messages[messages.length - 1];
+            lastMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, 50);
+}
 </script>
 </body>
 </html>

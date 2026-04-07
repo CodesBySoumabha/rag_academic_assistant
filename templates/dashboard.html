@@ -120,6 +120,7 @@
                         <span
                             class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
                         <input
+                            id="search-input"
                             class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/20 transition-all"
                             placeholder="Search by name, content, or category..." type="text" />
                     </div>
@@ -211,15 +212,18 @@
                                 </div>
                             </div>
                             <div>
-                                <a href="/view/{{ file }}"
-                                    class="text-sm font-bold text-slate-900 dark:text-white truncate block hover:text-primary transition-colors"
-                                    title="{{ file }}">{{ file }}</a>
-                                <div class="flex items-center justify-between mt-1.5">
-                                    <span
-                                        class="text-[10px] px-2 py-0.5 bg-primary/10 text-primary rounded-full font-bold uppercase tracking-wider">{{
-                                        category }}</span>
-                                </div>
-                            </div>
+    <a href="/view/{{ file }}"
+        class="text-sm font-bold text-slate-900 dark:text-white truncate block hover:text-primary transition-colors"
+        title="{{ file }}">{{ file }}</a>
+    {% if summary %}
+    <p class="text-[11px] text-slate-500 mt-1 leading-relaxed line-clamp-2" title="{{ summary }}">{{ summary }}</p>
+    {% endif %}
+    <div class="flex items-center justify-between mt-1.5">
+        <span
+            class="text-[10px] px-2 py-0.5 bg-primary/10 text-primary rounded-full font-bold uppercase tracking-wider">{{
+            category }}</span>
+    </div>
+</div>
                         </div>
                         {% endfor %}
                         {% endfor %}
@@ -339,6 +343,20 @@
                 }
             });
         }
+        // Wire search bar
+document.getElementById('search-input').addEventListener('input', function() {
+    const query = this.value.toLowerCase().trim();
+    document.querySelectorAll('.note-card').forEach(card => {
+        // Get the filename text from the card
+        const filename = card.querySelector('a').textContent.toLowerCase();
+        const category = card.dataset.category.toLowerCase();
+        if (query === '' || filename.includes(query) || category.includes(query)) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+});
     </script>
 </body>
 

@@ -14,6 +14,10 @@ from langchain_chroma import Chroma
 from langchain_groq import ChatGroq
 
 load_dotenv()
+import pytesseract
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+import pdf2image
+pdf2image.pdf2image.POPPLER_PATH = r"C:\poppler\Release-25.12.0-0\poppler-25.12.0\Library\bin"
 
 app = Flask(__name__)
 app.secret_key = "noteflow_secret_2024"
@@ -219,7 +223,7 @@ def ocr_scanned_pdf(filepath):
     try:
         import pytesseract
         from pdf2image import convert_from_path
-
+        pages = convert_from_path(filepath, dpi=200, poppler_path=r"C:\poppler\Release-25.12.0-0\poppler-25.12.0\Library\bin")
         pages = convert_from_path(filepath, dpi=200)
         full_text = ""
         for i, page_img in enumerate(pages):
